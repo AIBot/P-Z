@@ -1,0 +1,7 @@
+*.pyc
+*.sqlite3
+.idea/*
+__pycache__/*
+migrations/*
+cistern/migrations/*
+__init*

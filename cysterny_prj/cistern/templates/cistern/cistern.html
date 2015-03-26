@@ -1,0 +1,58 @@
+{% extends "cistern/base.html"%}
+{% block title %} - Przegląd floty {% endblock %}
+{% block content %}
+
+<div id="Cisterns">
+<h1>Flota</h1>
+<p>
+    Widoczne tu są wszystkie pojazdy dostawcze.
+</p>
+    <!--Some messages-->
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+        {{ message }}
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    <!--Some messages-->
+
+
+        {% if cistern_list %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th class="col-lg-1">Nazwa</th>
+            <th class="col-lg-1">Ładunek / Max</th>
+            <th class="col-lg-1">Status</th>
+            <th class="col-lg-1">Miasto</th>
+            <th class="col-lg-1">Odległość</th>
+            <th class="col-lg-1">Pozostały czas pracy</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for cistern in cistern_list %}
+      <tr>
+          <td><a href="{% url 'cistern_detail' cistern.id %}"> {{ cistern.name }}</a></td>
+
+          <td>{{ cistern.capacity }}  / {{ cistern.max_capacity }}</td>
+          <td> {% if cistern.status == 0 %}
+              gotowy
+              {% else %}
+              w trasie
+              {% endif %}
+          </td>
+          <td>{{ cistern.last_location }}</td>
+          <td>{{ cistern.distance_from }} km</td>
+          <td> {{ cistern.remaining_time }} h</td>
+          </tr>
+        {% endfor %}
+           </tbody>
+        </table>
+    {% else %}
+    <p> Obecnie nie ma żadnej cysterny w flocie. </p>
+    {% endif %}
+</div>
+    {% endblock %}

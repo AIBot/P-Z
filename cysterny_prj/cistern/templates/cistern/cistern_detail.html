@@ -1,0 +1,49 @@
+{% extends "cistern/base.html"%}
+{% block title %} Cysterna {% endblock %}
+{% block content %}
+
+<div id="Cisterns">
+<h1>Cysterna</h1>
+    <h2> {{ cistern.name }}</h2>
+<p>
+    Szczegółowy widok cysterny.
+</p>
+    <!--Some messages-->
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+        {{ message }}
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    <!--Some messages-->
+
+
+        {% if fuel_container %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th class="col-lg-1">Typ paliwa</th>
+            <th class="col-lg-1">Ładowność</th>
+            <th class="col-lg-1">Czy załadowany</th>
+            <th class="col-lg-1">Zamówienie</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for fc in cistern.fuelcontainer_set.all %}
+      <tr>
+          <td>{{ fc.type }}</td>
+          <td>{{ fc.max_capacity }}</td>
+          <td>{{ fc.is_loaded }}</td>
+          <td> {{ fc.order }}</td>
+          </tr>
+        {% endfor %}
+           </tbody>
+        </table>
+    {% else %}
+    <p> Obecnie nie ma tu żadnego zbiornika. </p>
+    {% endif %}
+</div>
+    {% endblock %}
