@@ -1,5 +1,6 @@
 from django.db import models
 from datetime import datetime
+from django.utils import timezone
 
 
 class Fuel(models.Model):
@@ -23,7 +24,6 @@ class FuelContainer(models.Model):
             return False
         else:
             return True
-
 
 
 class Cistern(models.Model):
@@ -57,6 +57,7 @@ class Cistern(models.Model):
 
 class City(models.Model):
     name = models.CharField(max_length=30)
+
     def __str__(self):
         return self.name
 
@@ -71,7 +72,6 @@ class CityDistance(models.Model):
 
 
 class OrderStatus(models.Model):
-    #status = models.CharField(max_length=15)
     status = models.SmallIntegerField(choices=(
         (0, 'recieved'),
         (1, 'in progress'),
@@ -83,13 +83,25 @@ class OrderStatus(models.Model):
 
 
 class Order(models.Model):
-    #path = models.ForeignKey(CityDistance)
-    # to_city = models.ForeignKey(City, related_name='city_order_to')
     to_city = models.ForeignKey(City)
     fuel_type = models.ForeignKey(Fuel)
     order_capacity = models.IntegerField()
     status = models.ForeignKey(OrderStatus)
-    data = models.DateTimeField(default=datetime.now())
+    data = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.data.isoformat()
+
+
+class Path(models.Model):
+    n_city = models.ManyToManyField(CityDistance)
+    cistern = models.ForeignKey(Cistern)
+
+    def __str__(self):
+        return "%s" % self.cistern.name
+
+    def elapsed_time(self):
+        time = 0
+        for city_dist in self.n_city.all():
+            time = time+city_dist.distance
+        return time
