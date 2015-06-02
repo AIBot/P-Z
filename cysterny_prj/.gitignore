@@ -3,4 +3,4 @@
 __pycache__/*
 migrations/*
 cistern/migrations/*
-__init*
+db.sqlite3
