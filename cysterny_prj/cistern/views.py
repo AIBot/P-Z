@@ -7,6 +7,7 @@ from django.http import HttpResponseForbidden, HttpResponseRedirect
 from django.views.generic import TemplateView, FormView, CreateView, \
     UpdateView, DeleteView
 from cistern.forms import OrderForm
+from cistern.Algorithm import *
 
 
 class IndexView(TemplateView):
@@ -40,14 +41,14 @@ class OrderListView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(OrderListView, self).get_context_data(**kwargs)
-        context['order_list'] = Order.objects.all()
+        context['order_list'] = AlgOrder.objects.all()
         return context
 
 
 class CreateOrderView(CreateView):
     template_name = "cistern/order_form.html"
     success_url = reverse_lazy('index')
-    model = Order
+    model = AlgOrder
     form_class = OrderForm
 
     def form_valid(self, form):
@@ -55,8 +56,12 @@ class CreateOrderView(CreateView):
         new_order.status = get_object_or_404(OrderStatus, status=0)
         new_order.save()
         messages.success(self.request, 'Zamówienie przyjęte do realizacji.')
+        alg = Algorithm()
+        alg.calc()
+
 
         return super(CreateOrderView, self).form_valid(form)
+
 
 class PathListView(TemplateView):
     template_name="cistern/path_list.html"

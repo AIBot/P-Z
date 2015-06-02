@@ -19,6 +19,9 @@ class FuelContainer(models.Model):
     def __str__(self):
         return "%s %s" % (self.type, self.max_capacity)
 
+    def __lt__(self, other):
+        return self.max_capacity < other.max_capaity
+
     def is_loaded(self):
         if self.order is None:
             return False
