@@ -42,5 +42,9 @@ class Vertex:
     def set_visited(self):
         self.visited = True
 
-    def __str__(self):
+    #def __str__(self):
+    def __unicode__(self):
         return str(self.id) + ' adjacent: ' + str([x.id for x in self.adjacent])
+
+    def __lt__(self, other):
+        return self.distance < other.distance
