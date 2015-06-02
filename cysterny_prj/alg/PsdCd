@@ -1,0 +1,52 @@
+Projekt algorytmu [wstepny/idea - modyfikowany na bieżąco na papierze, przepisywać nie bd].
+
+1. SORTUJ zamówienia po ilości paliwa nierosnąco
+
+2. SORTUJ cysterny według wybranego kryterium (proponuję tą Biggest Tank)
+
+3. WHILE not served ORDERS left:
+
+4. 		WYBIERZ największe nieobsłużone zamówienie <ORDER>
+
+5. 		WYBIERZ cysterną (największą wg. kryterium) <TANK>
+
+6. 		IF TANK have free CELLS:
+
+7.	 		CHOOSE <DRIVER>
+
+8.	 		IF DRIVER's remaining time <= ORDER realisation time
+
+9.				IF ORDER not served (albo tylko częściowo- jakiś boolean done = false)
+
+10.					CHOOSE the biggest free CELL from the chosen TANK
+
+11.					IF 	chosen	CELL <= FUEL amount (pelne zbiorniki)
+
+12.						FILL cell with part of the ORDER
+
+13.					IF no free CELLs left in TANK
+
+14.						go to line 4.
+
+15. 				ELSE IF free CELLs left TANK
+
+16. 					go to line 9.
+
+17. 				ELSE
+
+18.						go to line 8.
+
+19. 			ELSE
+
+20. 				go to line 3.
+
+21.	 		ELSE
+
+22. 			// i tu w zależności czy kierowca jest związany z tylko jedną cysterną
+				// to bierzemy następnego kierowcęalbo następną cysternę z listy..
+
+23. 	ELSE
+
+24. 		get next TANK
+
+25. END LOOP

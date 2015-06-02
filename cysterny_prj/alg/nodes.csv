@@ -1,0 +1,3 @@
+Node1,Node2,15,Node3,160,Node4,400
+Node2,Node1,40,Node3,40,Node4,400
+Node3,Node1,16,Node5,20
