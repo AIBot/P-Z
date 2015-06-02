@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, render_to_response
 from cistern.models import Cistern, CityDistance, \
-    City, Order, OrderStatus, Fuel, FuelContainer
+    City, Order, OrderStatus, Fuel, FuelContainer, Path
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib import messages
 from django.http import HttpResponseForbidden, HttpResponseRedirect
@@ -57,6 +57,14 @@ class CreateOrderView(CreateView):
         messages.success(self.request, 'Zamówienie przyjęte do realizacji.')
 
         return super(CreateOrderView, self).form_valid(form)
+
+class PathListView(TemplateView):
+    template_name="cistern/path_list.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(PathListView, self).get_context_data(**kwargs)
+        context['path_list'] = Path.objects.all()
+        return context
 
 
 

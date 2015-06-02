@@ -8,6 +8,7 @@ from Graph import Graph
 from FileLoader import *
 import sys
 
+
 # TODO: UWAGA - program zaklada, ze jesli z pkt A do pkt B jedzie sie 50 min to z pkt B do pkt A jedzie sie\
 # TODO: \tak samo !! P.S - posprzatam ten bajzel kiedys.. chyba
 # ACHTUNG :
