@@ -33,11 +33,20 @@
             <li><a href="{% url 'cistern' %}">Podgląd floty</a></li>
                <li><a href="{% url 'create_order' %}">Złoż zamówienie</a></li>
              <li><a href="{% url 'order_list' %}">Przegląd zamówień</a></li>
+               {% if user.is_authenticated %}
                <li><a href="{% url 'path_list' %}">Przegląd ścieżek</a></li>
-               <li><a href="{% url 'calc' %}">Oblicz</a></li>
+
+               <li><a href="{% url 'calc' %}">Zarządzanie</a></li>
+               {% endif %}
+
                </ul>
           <ul class="nav navbar-nav navbar-right">
- <!--TODO login -->
+{% if user.is_authenticated %}
+              <p class="navbar-text">Zalogowany jako <a href="" class="navbar-link"><b>{{user.get_username}}</b></a></p>
+                <li> <a class="navbar-link" href="{% url 'logout' %}" ><b>wyloguj się</b></a> </li>
+    {% else %}
+      <li><a class="navbar-link" href="{% url 'login' %}" ><b>zaloguj się</b></a></li>
+{% endif %}
           </ul>
         </div><!--/.nav-collapse -->
       </div>

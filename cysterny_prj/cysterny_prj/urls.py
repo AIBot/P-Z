@@ -1,7 +1,8 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from cistern.views import IndexView, OrderListView, CisternView, \
-    CreateOrderView, CisternDetailView, PathListView, CalcView
+    CreateOrderView, CisternDetailView, PathListView, CalcView, \
+    LoginView, LogoutView
 #
 # urlpatterns = patterns('',
 #
@@ -17,5 +18,7 @@ urlpatterns = [
     url(r'^order/$', CreateOrderView.as_view(), name="create_order"),
     url(r'^paths/$', PathListView.as_view(), name="path_list"),
     url(r'^calc/$', CalcView.as_view(), name="calc"),
+    url(r'^login/$', LoginView.as_view(), name="login"),
+    url(r'^logout/$', LogoutView.as_view(), name="logout"),
     url(r'^admin/', include(admin.site.urls)),
 ]

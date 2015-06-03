@@ -1,9 +1,9 @@
 {% extends "cistern/base.html"%}
-{% block title %} - Obliczanie {% endblock %}
+{% block title %} - Zarządzanie {% endblock %}
 {% block content %}
 
 <div id="Calc">
-<h1>Index</h1>
+<h1>Zarządzanie</h1>
 
     <!--Some messages-->
     {% if messages %}
@@ -18,7 +18,11 @@
     <!--Some messages-->
 
     <p>
-            System przetwarza dane.
+    Czy przeliczyć trasy cystern?
+    <div class="container">
+    {% load crispy_forms_tags %}
+    {% crispy form %}
+</div>
     </p>
 
 
