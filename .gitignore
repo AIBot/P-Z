@@ -1,7 +1,13 @@
 *.pyc
-.idea/*
+*/.idea/*
 __pycache__/*
 migrations/*
 cistern/migrations/*
 *db.sqlite3
 *.csv
+*.aux
+*.lo*
+*.toc
+*.out
+*.swp
+*.swo

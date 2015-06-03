@@ -1,0 +1,61 @@
+\documentclass[11pt,a4paper,oneside]{mwart}
+
+\usepackage[utf8]{inputenc}
+
+\def \MYHEADER {Projekt Zespołowy}
+\def \MYTITLE {Projekt systemu do dystrybucji paliw płynnych}
+\def \MYPDFTITLE {Cysterny}
+
+\def \MYPDFDATE {\today}
+
+\def \MYAUTHOR {\emph{Autorzy:}\\Tomasz \textsc{Bartnik}\\Jakub \textsc{Chrzanowski}\\Alexander \textsc{Dyszy}\\Aleksandra \textsc{Grzelak}}
+\def \MYPDFAUTHOR {Aleksandra Grzelak}
+
+\def \MYLECTURER {\emph{Prowadzący:} \\dr~hab.~in\.z.~C.~\textsc{Smutnicki}}
+
+\def \MYLSTSETLANGUAGE {python}
+
+\def \MYLSTSETFRAME {lines}
+						%none, %single, 
+
+\def \MYLSTSETKEYWORDS {} 
+
+\input{_cfg_cistern.tex}
+
+\begin{document}
+
+\input{_str_tytulowa.tex}
+
+\newpage
+\thispagestyle{empty}
+\newpage
+
+\setcounter{tocdepth}{3}
+\tableofcontents
+\newpage
+
+
+% =============================================
+\section{Cel projektu}
+system do dystrybucji paliw płynnych za pomocą floty cystern samochodowych w oparciu o zasoby paliw zgromadzone w jednej centralnej bazie
+% =============================================
+\section{Założenia projektowe}
+
+\section{Kosztorys}
+\section{Uwagi}
+TODO trzeba zapytać o schemat dokumentacji
+
+
+
+ 
+ \newpage
+ \listoftables
+ %\listoffigures
+ \listofwykress
+ \listofschems
+
+% =============================================
+ \begin{thebibliography}{12}
+   \bibitem{mgr} TODO Czyjaś praca magisterska \emph{Ktoś} Kiedyś
+ \end{thebibliography}
+\end{document}
