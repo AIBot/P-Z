@@ -11,7 +11,7 @@ class Fuel(models.Model):
 
 
 class FuelContainer(models.Model):
-    type = models.ForeignKey(Fuel)
+    type = models.ForeignKey(Fuel,blank=True, null=True, default=0)
     max_capacity = models.IntegerField()
     cistern = models.ForeignKey('Cistern')
     order = models.ForeignKey('Order', blank=True, null=True, default=0)
@@ -27,6 +27,9 @@ class FuelContainer(models.Model):
             return False
         else:
             return True
+
+    class Meta:
+        ordering = ['-max_capacity']
 
 
 class Cistern(models.Model):

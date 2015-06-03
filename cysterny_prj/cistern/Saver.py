@@ -32,7 +32,6 @@ def save_cistern(filename):
         for cistern in cistern_list:
             row = []
             row += [str(cistern.id)]
-            row += [str(cistern.capacity())]
             containers = []  # for sorting
             for cont in cistern.fuelcontainer_set.all():
                 if not cont.is_loaded():

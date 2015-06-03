@@ -1,0 +1,27 @@
+{% extends "cistern/base.html"%}
+{% block title %} - Obliczanie {% endblock %}
+{% block content %}
+
+<div id="Calc">
+<h1>Index</h1>
+
+    <!--Some messages-->
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+        {{ message }}
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    <!--Some messages-->
+
+    <p>
+            System przetwarza dane.
+    </p>
+
+
+</div>
+
+    {% endblock %}

@@ -68,7 +68,7 @@ class Algorithm:
 
         new_list = []
         for itr in range(len(to_sort)):
-            new_list.append(Order(to_sort[itr][2], to_sort[itr][1], to_sort[itr][0], to_sort[itr][3]))
+            new_list.append(AlgOrder(to_sort[itr][2], to_sort[itr][1], to_sort[itr][0], to_sort[itr][3]))
 
         return new_list
 
@@ -177,7 +177,9 @@ class Algorithm:
         tank_list = self.get_tanks_from_file(cistern_filename, g.get_vertex(basename))
         self.print_all_info(g, orders_list, tank_list)
         print (" ")
-        self.print_results(self.algorithm3(orders_list, tank_list, g))
+        results=self.algorithm3(orders_list, tank_list, g)
+        self.print_results(results)
+        return results
 
     # g = get_graph_from_file("nodes.csv")
     # orders_list = get_orders_from_file('Zamowienie.csv')
