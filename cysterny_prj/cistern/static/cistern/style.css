@@ -8,7 +8,9 @@ body {
 
 h1 {
     color: #2f849e;
-    text-align: center;
+    text-align: left;
+    margin-top: 40px;
+	margin-bottom: 40px;
 }
 
 table{
@@ -40,4 +42,38 @@ a {
 
 .asteriskField {
     display: none;
+}
+
+#Order_detail {
+	margin-top: 0px;
+	margin-left: 10%;
+	margin-right: 20%;
+	text-align: center;
+    width: 30%
+}
+#Cistern_img {
+	margin-top: 50px;
+	margin-bottom: 70px;
+	text-align: center;
+    width: 99%
+}
+
+#Index_txt {
+	margin-top: 40px;
+	margin-bottom: 40px;
+	margin-left: 10%;
+	margin-right: 10%;
+	text-align: justify;
+    width: 40%
+}
+#login {
+	margin-top: 10px;
+	margin-left: 10%;
+	margin-right: 40%;
+}
+#inside {
+	margin-top: 40px;
+	margin-left: 10%;
+	margin-right: 10%;
+    width: 80%
 }

@@ -1,13 +1,16 @@
 {% extends "cistern/base.html"%}
-{% block title %} Cysterna {% endblock %}
+{% block title %} - Szczegóły cysterny {% endblock %}
 {% block content %}
 
 <div id="Cisterns">
-<h1>Cysterna</h1>
-    <h2> {{ cistern.name }}</h2>
-<p>
-    Szczegółowy widok cysterny.
-</p>
+
+<h1>Cysterna {{ cistern.name }}</h1>
+<br>
+    <div id="Cistern_img">
+
+    <img src="{{ STATIC_URL }}/cistern/cistern_pics/{{cistern.no_containers}}.png" />
+
+    </div>
     <!--Some messages-->
     {% if messages %}
     <ul class="messages">
@@ -46,4 +49,5 @@
     <p> Obecnie nie ma tu żadnego zbiornika. </p>
     {% endif %}
 </div>
+
     {% endblock %}

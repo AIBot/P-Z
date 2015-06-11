@@ -4,9 +4,12 @@
 
 <div id="OrderForm">
 <h1>Złóż zamówienie</h1>
+<div id="Index_txt">
 <p>
     Zamówienie zrealizujemy najszybciej jak to możliwe.
 </p>
+
+
     <!--Some messages-->
     {% if messages %}
     <ul class="messages">
@@ -18,9 +21,11 @@
     </ul>
     {% endif %}
     <!--Some messages-->
-    </div>
-<div class="container">
+ </div>
+<div class="container"">
     {% load crispy_forms_tags %}
     {% crispy form %}
 </div>
+
+     </div>
     {% endblock %}

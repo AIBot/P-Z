@@ -113,6 +113,26 @@ class OrderListView(TemplateView):
         context['order_list'] = Order.objects.all()
         return context
 
+class OrderDetailView(TemplateView):
+    template_name="cistern/order_detail.html"
+
+    def get_context_data(self, **kwargs):
+        order_id = kwargs['order_id']
+        context = super(OrderDetailView, self).get_context_data(**kwargs)
+        the_order=get_object_or_404(Order, pk=order_id)
+        context['order'] = the_order
+        fuel_containers=FuelContainer.objects.filter(order=the_order)
+        cisterns=[]
+        for fc in fuel_containers:
+            jest=False
+            for cc in cisterns:
+                if cc.id == fc.cistern.id:
+                    jest=True
+                    break
+            if not jest:
+                cisterns+=[fc.cistern]
+        context['cisterns'] = cisterns
+        return context
 
 class CreateOrderView(CreateView):
     template_name = "cistern/order_form.html"
@@ -189,3 +209,4 @@ class CalcView(PermissionRequiredMixin, FormView):
         messages.success(self.request, 'Przeliczono trasy.')
 
         return super(CalcView, self).form_valid(form)
+

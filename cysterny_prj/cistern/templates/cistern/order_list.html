@@ -4,9 +4,13 @@
 
 <div id="Order">
 <h1>Przegląd zamówień</h1>
+    <div id="Index_txt">
+
 <p>
     Tu można zobaczyć historię wszystkich zamówień.
 </p>
+        </div>
+        </div>
         <!--Some messages-->
     {% if messages %}
     <ul class="messages">
@@ -34,7 +38,7 @@
 
         {% for order in order_list %}
          <tr>
-             <td>{{ order.data|date:"d.m.Y" }}, {{ order.data|time:"H:i" }}
+             <td><a href="{% url 'order_detail' order.id %}"> {{ order.data|date:"d.m.Y" }}, {{ order.data|time:"H:i" }} </a>
              </td>
              <td>{{ order.to_city.name }}</td>
              <td>{{ order.fuel_type }}</td>

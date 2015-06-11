@@ -57,8 +57,15 @@ class Cistern(models.Model):
                 c = c+container.max_capacity
         return c
 
+    def no_containers(self):
+        i = 0
+        for container in self.fuelcontainer_set.all():
+            i += 1
+        return i
+
     def __str__(self):
         return self.name
+
 
 
 class City(models.Model):

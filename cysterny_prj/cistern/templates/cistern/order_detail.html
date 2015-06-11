@@ -1,16 +1,40 @@
 {% extends "cistern/base.html"%}
-{% block title %} - Przegląd floty {% endblock %}
+{% block title %} - Szczegóły zamówienia {% endblock %}
 {% block content %}
 
 <div id="Cisterns">
-<h1>Flota</h1>
-<div id="Index_txt">
-    <p>
-    Widoczne tu są wszystkie pojazdy dostawcze.
-        Można tu zapoznanać się z ich trasami, zamówieniami, które realizują oraz załadunkiem.
-</p>
-</div>
+<h1>Zamówienie</h1>
+<div id="Order_detail">
+    <table class="table">
+                <thead>
+        <tr>
+            <th class="col-md-1"></th>
+            <th class="col-md-1"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td> Do: </td>
+            <td> {{ order.to_city }}</td>
+        </tr>
+        <tr>
+            <td> Typ paliwa: </td>
+            <td>  {{ order.fuel_type }}</td>
+        </tr>
+        <tr>
+            <td>Ilość:</td>
+        <td> {{ order.order_capacity }}
+        </td></tr>
+        <tr>
+            <td>
+                Data zamówienia:
+            </td>
+            <td> {{ order.data }}</td>
+        </tr>
+</tbody>
+    </table>
 
+</div>
     <!--Some messages-->
     {% if messages %}
     <ul class="messages">
@@ -24,8 +48,9 @@
     <!--Some messages-->
 
 
-        {% if cistern_list %}
-    <table class="table">
+{% if cisterns %}
+    <p> Lista cystern obsługujących zamówienie</p> <br>
+     <table class="table">
         <thead>
         <tr>
             <th class="col-lg-1">Nazwa</th>
@@ -37,7 +62,7 @@
         </tr>
         </thead>
         <tbody>
-        {% for cistern in cistern_list %}
+        {% for cistern in cisterns %}
       <tr>
           <td><a href="{% url 'cistern_detail' cistern.id %}"> {{ cistern.name }}</a></td>
 
@@ -56,8 +81,10 @@
            </tbody>
         </table>
     {% else %}
-    <p> Obecnie nie ma żadnej cysterny w flocie. </p>
+    <p> Obecnie zadanie nie ma jeszcz przydzielonej cysterny </p>
     {% endif %}
-</div>
 
+
+
+</div>
     {% endblock %}
