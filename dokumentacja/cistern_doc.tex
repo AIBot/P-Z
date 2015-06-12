@@ -56,17 +56,104 @@ System zawiera 4 moduły:
  % ==== TODO ======
 \section {Koncepcja rozwiązania}
 
+Algorytm realizujący postawione zadanie rozwiązuje dwa cele. Optymalizuje dobór cystern wraz z rozmieszczeniem paliwa w ich komorach według wybranego kryterium, minimalizuje ilość użytych pojazdów oraz dąży do minimalizacji czasu pracy cystern, a tym samym kosztów zużytego paliwa. Podczas rozwiązywania problemu brany pod uwagę jest także maksymalny czas pracy kierowcy.
+
+Polityka realizacji zamówień działa w systemie sesyjnym. To znaczy, że zamówienia nadchodzące danego dnia uszeregowane zostają o ustalonej godzinie dnia następnego. Zamówienia pojawiające się po owej godzinie podlegają szeregowaniu następnego dnia.
+
+\subsection{Stategia wyboru cystern}
+
+	Pod uwagę brane były dwie strategie wyboru cystern. Pierwsza, tzw. Biggest-Tank-First polega na wybieraniu do obsługi zamówienia zawsze cysterny o największej pojemności. Takie podejście ma na celu zminimalizowanie ilości użytych pojazdów kosztem wydłużenia trasy jaką pojazd musi przebyć. Drugą strategią jest strategia Fittest-Tank-First, opierająca się o próby doboru takich cystern, których pojemności są jak najbardziej zbliżone do rozmiaru zamówienia. Stosując tą trategię zmniejszamy sumaryczną odległość przebytą przez pojedynczą cysternę jednocześnie zwiększając ilość użytych do wykonania zleceń pojazdów. W niniejszym projekcie zdecydowano sięna przyjęcie strategii pierwszej, a więc Biggest-Tank-First.
+
+  \subsection{Strategia wypełniania komór cystern paliwem.}
+
+	Podczas napełniania komór cystern brane są pod uwagę następujące czynniki. W przypadku, gdy ilość zamówionego paliwa jest większa od pojemności rozpatrywanej komory, wówczas komora ta zostanie napełniona, a pozostała część zamówionego paliwa przekazana zostanie do kolejnej komory. Jeśli podczas wyboru komory dla danej ilości paliwa pojemność tej komory jest większa niż ilość paliwa, wówczas poszukiwany jest zbiornik mniejszy, o pojemności jak najbardziej zblizonej do rozmiaru rozpatrywanego zamówienia. Pozwala to uniknąć wypełniania dużych komór małymi ilościami paliwa, co ma wpływ na koszty transportu, a także jego bezpieczeństwo. 
+
+  \subsection{Ograniczenie związane z maksymalnycm czasem pracy kierowcy}
+	Odległości między punktami rozlewu paliwa określone są czasem potrzebnym do przebycia drogi między nimi. Podczas realizacji poprzednio opisanych zadań przeprowadzana jest estymacja czasu potrzebnego do zrealizowania zadania. Realizowane jest to w następujący sposób. Podczas wyboru cysterny do zrealizowania zadania wyliczany jest pozostały czas możliwej pracy kierowcy owego pojazdu na podstawie z góry ustalonego maksymalnego czasu dziennej pracy oraz przybliżonego czasu wykonania zadań już do cysterny przydzielonych. W przypadku wyznaczenia sumarycznego czasu pracy przekraczającego maksymalny, cysterna nie jest brana pod uwagę do tego zamówienia.
+
+
+\subsection{Inne algorytmy użyte w realizacji rozwiązywania problemu}
+	Do wyznaczenia najkrótszych tras pomiędzy węzłami użyto algorytm Dijkstry.
+
+	Realizuje on operacje szukania najkrótszych ścieżek w grafie. Użyty graf jest ważonym grafem nieskierowanym. Działanie tego algorytmu stanowi również podstawę do estymacji "w locie" czasu wykonania kolejnego nałozonego na cysternę zadania.	Wynikowy czas jest nie większy niż rzeczywisty czas realizacji.
+
+  \subsection{Dalszy rozwój algorytmu}
+
+	W przypadku dalszego rozwoju opisanego wyżej algorytmu należałoby zaopatrzyć go w możliwość doboru cystern według drugiego kryterium. Ponadto dodatkową minimalizację kosztów transportu paliwa można uzyskać rozwiązując problem plecakowy dla każdej cysterny, po wykończeniu jej pozostałego czasu pracy. Po odzyskaniu dodatkowego czasu związanego z kolejną optymalizacją trasy cysterny, pojazd mógłby zostać przywrócony do kolejki cystern rozpatrywanych w realizacji zamówień. Spowodowałoby to jednak gwałtowny wzrost złożoności obliczeniowej algorytmu i jego modyfikacja w tym kierunku byłaby sensowna jedynie w przypadku stosunkowo niewielkiej ilości punktów obsługiwanych przez system.
+
+
+ 
 \section{Użyte narzędzia}
-Do stworzenia aplikacji internetowej wraz z bazą danych użyto platformy \textsc{Django}, dostępnej na licencji \textsc{bsd}\footnote{dostępne w Internecie: \url{https://www.djangoproject.com/}}. 
+Do stworzenia aplikacji internetowej wraz z bazą danych użyto platformy \textsc{Django}, dostępnej na licencji \textsc{bsd}\footnote{dostępne w Internecie: \url{https://www.djangoproject.com/}}. Pozwala ona na tworzenie złożonych stron internetowych, opartych na bazie danych. Opiera się na wzorcu projektowym podobnym do model-widok-kontroler (model-view-template). Pozwala na oddzielenie logiki aplikacji (widok), logiki biznesowej (model), wyglądu (szablon) oraz bazy danych.
 
-Pozwala ona na tworzenie złożonych stron internetowych, opartych na bazie danych. Opiera się na wzorcu projektowym podobnym do model-widok-kontroler (model-view-template). Pozwala na oddzielenie logiki aplikacji (widok), logiki biznesowej (model), wyglądu (szablon) oraz bazy danych.
-
-Jako system zarządzania bazą danych został wybrany \textsc{SQLite}. System ten przetrzymuje bazę danych w jednym pliku binarnym. 
-
+Jako system zarządzania bazą danych został wybrany \textsc{SQLite}. System ten przetrzymuje bazę danych w jednym pliku binarnym.
 SQLite obsługuje zapytania zagnieżdzone, klucze obce, transakce, przechowywanie baz danych w pamięci RAM komputera, co przyspiesza działanie bazy.
 
 \section{Szczegółowy opis rozwiązania}
-Algorytm optymalizacyjny
+ 
+\paragraph{Organizacja danych wejściowych}
+\begin{enumerate}
+  \item Zamówienia (Orders) - zamówienie złożone na kilka różnych rodzajów paliwa traktowane jest jak kilka różnych zamówień. Z punktu widzenia algorytmu znaczenie mają takie parametry zamówienia jak ilość zamówionego paliwa i destynacja.
+
+  \item Cysterny (Tanks) - Głównymi parametrami cystern mającymi znaczenie w pracy algorytmu są sumaryczna pojemność, rozkład komór, maksymalny/pozostały czas pracy, oraz tzw, lokalizacja. Ten ostatni parametr stanowi podstawę do estymacji czasu wykonania potencjalnego zadania. Przyjmuje się, że komory  w cysternie posortowane są nierosnąco.
+
+
+  \item Węzły (Nodes) - Punkty rozlewu paliwa mające ścisły związek z zamawiającymi. Przedstawione są za pomocą grafu nieskierowanego z wagami odpowiadającymi czasowi przebycia drogi między poszczególnymi węzłami.
+
+\end{enumerate}
+
+Ideę działania algorytmu opisuje algorytm~\ref{alg:opt}.
+
+\begin{algorithm}[htbp]
+  \caption{Algorytm wyboru zbiorników oraz cystern do realizacji zadań.}
+  \label{alg:opt}
+  \begin{algorithmic}
+    \STATE {Posortuj \emph{zamówienia} po ilości paliwa nierosnąco.}
+    \STATE {Posortuj \emph{cysterny} według kryterium Biggest-Tank-First niemalejąco.}
+    \WHILE {istnieją nie zrealizowane zamówienia:}
+    \STATE {wybierz największe nieobsłużone zamówienie \emph{order}, $\quad$ (1)}
+    \STATE {wybierz cysternę \emph{tank} najlepiej odpowiadającą kryterium, $\quad$ (2)}
+    \IF { \emph{tank} posiada komory \emph{cells} niezapełnione \textbf{oraz} pozostały czas pracy jest mniejszy bądź równy od czasu realizacji zamówienia \emph{order}}
+    \IF { \emph{order} jest niezrealizowane (lub jest tylko częściowo), $\quad$ (3)}
+    \STATE {wybierz największą niezapełnioną komórkę cysterny \emph{cell}  }
+          \IF{ pojemność \emph{cell} jest mniejsza bądź równa od rozmiaru zamówienia \emph{order}}
+            \STATE { wypełnij komorę \emph{cell} częścią zamówieniea \emph{order}}
+        \ENDIF
+        \IF{ \emph{tank} nie posaida wolnych komór}
+          \STATE { idź do (2)}
+          \ELSE 
+          \STATE { idź do (3)}
+        \ENDIF
+       \ELSE
+       \STATE { idź do (1)}
+      \ENDIF
+     \ELSE
+     \STATE { idź do (2)}
+    \ENDIF
+
+    \ENDWHILE
+  \end{algorithmic}
+\end{algorithm}
+
+%1. SORTUJ zamówienia po ilości paliwa nierosnąco
+%2. SORTUJ cysterny według wybranego kryterium (Biggest-Tank-First) niemalejąco
+%3. DOPÓKI istnieją zamówienia nie zrealizowane:
+%4.		WYBIERZ największe nieobsłużone zamówienie <ORDER>
+%5.		WYBIERZ cysternę <TANK> najlepiej odpowiadającą kryterium
+%6.		JEŚLI <TANK> posiada komory<CELLS> niezapełnione ORAZ pozostały czas pracy <= czas realizacji <ORDER>:
+%7.			JEŚLI <ORDER> jest niezrealizowane (lub tylko częściowo):
+%8.				WYBIERZ największą niezapełnioną komórkę cysterny<CELL>
+%9.				JEŚLI pojemność <CELL> <= rozmiar <ORDER>
+%10.					WYPELNIJ komorę <CELL> częścią zamówienia <ORDER>
+%11.				JEŚLI <TANK> nie posiada wolnych komór
+%12.					IDŹ DO kroku 5.
+%13.				W PRZECIWNYM PRZYPADKU
+%14.					IDŹ DO kroku 7.
+%15.			W PRZECIWNYM PRZYPADKU
+%16.				IDŹ do kroku 4.
+%17.		W PRZECIWNYM PRZYPADKU
+%18.			IDŹ do kroku 5.
+%19. KONIEC
 
 \section{Opis techniczny oprogramowania}
 \subsection{Architektura}

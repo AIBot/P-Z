@@ -15,7 +15,8 @@
 
 %\oddsidemargin 0.5cm
 %\evensidemargin -0.5cm
-
+\usepackage{algorithmic}
+\usepackage[Algorytm]{algorithm}
 \usepackage{listings}
 \renewcommand{\labelitemi}{$\circ$}
 \renewcommand{\today}{\oldstylenums{\number\day}~\ifcase\month\or
@@ -102,16 +103,6 @@
 						  %\Roman{footnote}
 						  %\alph{footnote}
 
-\renewcommand{\thefootnote}{\fnsymbol{footnote}}
-\makeatletter 
-\def\@fnsymbol#1{\ensuremath{\ifcase#1\or %*\or przeniesione z
-\dagger\or \ddagger\or
-   \mathsection\or \mathparagraph\or \|\or *\or %przeniesione tu
-   **\or \dagger\dagger
-   \or \ddagger\ddagger \else przypis\fi}}
-%  \or \ddagger\ddagger \else\@ctrerr\fi}} %błąd jak jest za dużo i skończą się znaczki
-\makeatother
-
 
 \usepackage{float}
 %\newfloat{schemat}{pb}{htpb} % second argument should be {htbp} in your actual iedocument
@@ -146,4 +137,15 @@
 \newcommand{\tab}[1]{\hspace{.29\textwidth}\rlap{#1}}
 
 
-
+\renewcommand\algorithmicforall{\textbf{Dla wszystkich}}
+\renewcommand\algorithmicfor{\textbf{Dla}}
+\renewcommand\algorithmicdo{\textbf{wykonaj:}}
+\renewcommand\algorithmicendfor{\textbf{Koniec.}}
+\renewcommand\algorithmicif{\textbf{Jeżeli}}
+\renewcommand\algorithmicthen{\textbf{to:}}
+\renewcommand\algorithmicendif{\textbf{Koniec.}}
+\renewcommand\algorithmicelse{\textbf{W przeciwnym wypadku:}}
+\renewcommand\algorithmicwhile{\textbf{Dopóki}}
+\renewcommand\algorithmicendwhile{\textbf{Koniec.}}
+\renewcommand\algorithmicreturn{\textbf{Zwróć}}
+\setlength{\algorithmicindent}{2em}
