@@ -4,9 +4,11 @@
 
 <div id="Path">
 <h1>Przegląd ścieżek</h1>
-<p>
-    Tu można zobaczyć ścieżki.
+<div id="inside">
+    <p>
+    Tu można zobaczyć trasy cystern.
 </p>
+
         <!--Some messages-->
     {% if messages %}
     <ul class="messages">
@@ -17,14 +19,19 @@
         {% endfor %}
     </ul>
     {% endif %}
+
         <!--Some messages-->
+<div id="Path_detail">
+
 
     {% if path_list %}
-        <table class="table" width="50%">
+        <table class="table">
         <thead>
         <tr>
-            <th class="col-lg-2">Cysterna</th>
-            <th class="col-lg-2">Dokąd</th>
+            <th class="col-lg-3">Cysterna</th>
+            <th class="col-lg-3">Skąd</th>
+            <th class="col-lg-1"></th>
+             <th class="col-lg-3">Dokąd</th>
         </tr>
         </thead>
         <tbody>
@@ -33,8 +40,11 @@
         {% for cc in path.n_city.all %}
 
          <tr>
-             <td>{{ path.cistern}} </td>
-             <td> {{ cc }}</td>
+             <td><a href="{% url 'cistern_detail' path.cistern.id %}"> {{ path.cistern}} </a></td>
+             <td> {{ cc.from_city }} </td>
+             <td>
+  <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>  </td>
+             <td> {{ cc.to_city }}</td>
          </tr>
         {% endfor %}
 
@@ -44,5 +54,7 @@
     {% else %}
     <p> Brak zamówień do wyświetlenia. </p>
     {% endif %}
+</div>
+
 </div>
     {% endblock %}

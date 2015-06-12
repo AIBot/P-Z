@@ -17,6 +17,11 @@ class OrderForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(OrderForm, self).__init__(*args, **kwargs)
+        self.fields['to_city'].label = "Miasto docelowe"
+        self.fields['fuel_type'].label = "Typ paliwa"
+        self.fields['order_capacity'].label = "Ilość"
+
+
         self.helper.form_class = 'form-horizontal'
         self.helper.label_class = 'col-lg-3'
         self.helper.field_class = 'col-lg-2'
@@ -66,6 +71,8 @@ class LoginForm(AuthenticationForm):
             Field('password', placeholder="Password"),
             Submit('submit', "Zaloguj", css_class='btn btn-primary'),
 )
+        self.fields['username'].label = "Nazwa użytkownika"
+        self.fields['password'].label = "Hasło"
 
 
 

@@ -8,27 +8,25 @@
     <table class="table">
                 <thead>
         <tr>
-            <th class="col-md-1"></th>
-            <th class="col-md-1"></th>
+            <th class="col-lg-1"></th>
+            <th class="col-lg-1"></th>
         </tr>
         </thead>
         <tbody>
         <tr>
             <td> Do: </td>
-            <td> {{ order.to_city }}</td>
+            <td> {{ order.to_city }} </td>
         </tr>
         <tr>
             <td> Typ paliwa: </td>
-            <td>  {{ order.fuel_type }}</td>
+            <td>  {{ order.fuel_type }} </td>
         </tr>
         <tr>
-            <td>Ilość:</td>
-        <td> {{ order.order_capacity }}
-        </td></tr>
+            <td> Ilość: </td>
+            <td> {{ order.order_capacity }} </td>
+        </tr>
         <tr>
-            <td>
-                Data zamówienia:
-            </td>
+            <td> Data zamówienia:</td>
             <td> {{ order.data }}</td>
         </tr>
 </tbody>
@@ -68,9 +66,9 @@
 
           <td>{{ cistern.capacity }}  / {{ cistern.max_capacity }}</td>
           <td> {% if cistern.status == 0 %}
-              gotowy
+                <span class="label label-success">gotowy</span>
               {% else %}
-              w trasie
+              <span class="label label-info">w trasie</span>
               {% endif %}
           </td>
           <td>{{ cistern.last_location }}</td>

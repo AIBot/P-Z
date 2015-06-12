@@ -37,13 +37,233 @@
 
 % =============================================
 \section{Cel projektu}
-system do dystrybucji paliw płynnych za pomocą floty cystern samochodowych w oparciu o zasoby paliw zgromadzone w jednej centralnej bazie
+Zaprojektować system do dystrybucji paliw płynnych za pomocą floty cystern samochodowych w oparciu o zasoby paliw zgromadzone w jednej centralnej bazie (magazynie).
+
+%system do dystrybucji paliw płynnych za pomocą floty cystern samochodowych w oparciu o zasoby paliw zgromadzone w jednej centralnej bazie
 % =============================================
 \section{Założenia projektowe}
+Dostęp do systemu jest realizowany za pomocą standardowej przeglądarki. Zamówienia na paliwa (ich rodzaj i ilość), kategorie cystern dostępne w bazie transportowej, odległości transportowe, ograniczenia czasu pracy kierowców, etc., są kolekcjonowane w bazie danych serwera zaś zarządzanie nimi odbywa się poprzez aplikację webową. Zamówienia są składane on-line przez lokalne stacje paliw i realizowane wg przyjętego scenariusza obsługi. Algorytm optymalizacyjny jest uruchamiany na serwerze.
 
-\section{Kosztorys}
-\section{Uwagi}
-TODO trzeba zapytać o schemat dokumentacji
+System zawiera 4 moduły: 
+\begin{itemize}
+  \item baza danych z aplikacją serwera plus webowa aplikacja zamówień na dostarczenie paliw, 
+  \item algorytm optymalizacji tras cystern i polityki ich ładowania/rozładowania, 
+  \item interfejs graficzny systemu, 
+  \item system wizualizacji mapy transportowej.
+\end{itemize}
+
+
+ % ==== TODO ======
+\section {Koncepcja rozwiązania}
+
+\section{Użyte narzędzia}
+Do stworzenia aplikacji internetowej wraz z bazą danych użyto platformy \textsc{Django}, dostępnej na licencji \textsc{bsd}\footnote{dostępne w Internecie: \url{https://www.djangoproject.com/}}. 
+
+Pozwala ona na tworzenie złożonych stron internetowych, opartych na bazie danych. Opiera się na wzorcu projektowym podobnym do model-widok-kontroler (model-view-template). Pozwala na oddzielenie logiki aplikacji (widok), logiki biznesowej (model), wyglądu (szablon) oraz bazy danych.
+
+Jako system zarządzania bazą danych został wybrany \textsc{SQLite}. System ten przetrzymuje bazę danych w jednym pliku binarnym. 
+
+SQLite obsługuje zapytania zagnieżdzone, klucze obce, transakce, przechowywanie baz danych w pamięci RAM komputera, co przyspiesza działanie bazy.
+
+\section{Szczegółowy opis rozwiązania}
+Algorytm optymalizacyjny
+
+\section{Opis techniczny oprogramowania}
+\subsection{Architektura}
+Architektura systemu jest modłuowa. System składa się z interfejsu \textsc{www}, aplikacji zarządzającej, bazy danych oraz algorytmu optymalizacjynego.
+
+Przepływ informacji w systemie został przedstawiony na obrazku \ref{fig:informacja}. Użytkownik poprzez interfejs www ma możliwość wglądu w stan realizacji zamówień, trasę i załadunku cystern. Jednocześnie poprzez stronę może składać nowe zamówienie. Żądania użytkownika są kierowane do aplikacji, która je obsługuje. Nowe zamówienie jest zapisywane w bazie danych. Z bazy jest pobierana informacja o pozostałych zamówieniach i stanie floty cystern. Te informacje przekazywane są poprzez aplikacje do algorytmu optymalizującego, który na tej podstawie wylicza załadunek i optymalną trasę cystern.  Nowy stan jest uaktualniany w bazie i wizualizowany użytkownikowi.
+Administrator ponadto ma możliwość pełnego wglądu do bazy danych i jej modyfikacji.
+
+\begin{schemat}
+  \centering
+  \includegraphics[width=0.6\textwidth]{pics/przep_inf.pdf}
+  \caption{Przepływ informacji w systemie.}
+  \label{fig:informacja}
+\end{schemat}
+
+ % ==== TODO ======
+\subsection{Baza danych}
+Baza danych oparta jest o modele:
+\begin{itemize}
+  \item \emph{Paliwo} (Fuel) 
+    \begin{itemize}
+      \item typ paliwa (np. Pb95),
+    \end{itemize}
+    \item \emph{Kontener} (Container) 
+          \begin{itemize}
+            \item typ paliwa jaki jest wewnątrz (jeżeli jest)
+            \item maksymalna pojemność
+            \item do której cysterny należy
+            \item przydzielone zamówienie (jeżeli jest)
+    \end{itemize}
+      \item \emph{Cysterna} (Cistern) 
+            \begin{itemize}
+      \item nazwa cysterny,
+      \item status (czy jest w trasie)
+      \item pozostały czas pracy,
+      \item ostanie odwiedzone miasto,
+    \end{itemize}
+    \item \emph{Miasto} (City)
+          \begin{itemize}
+      \item nazwa miasta
+    \end{itemize}
+    \item \emph{Zamówienie} (Order) 
+    \begin{itemize}
+      \item miasto docelowe,
+      \item zamówione paliwo
+      \item ilość paliwa
+      \item status realizaji
+      \item data złożenia zamówienia
+    \end{itemize}
+    \item \emph{Status zamówienia} (OrderStatus) 
+    \begin{itemize}
+      \item gotowe / w trakcie realizacji / zrealizowane
+    \end{itemize}
+    \item \emph{Odległość} (CityDistiance) -- miasta i odległości między nimi,
+    \begin{itemize}
+      \item miasto początowe
+      \item miasto końcowe
+      \item odległość między nimi
+    \end{itemize}
+    \item \emph{Ścieżka} (Path) 
+    \begin{itemize}
+      \item cysterna,
+      \item miasta do odwiedzenia (odległość),
+    \end{itemize}
+\end{itemize}
+
+\begin{schemat}
+  \centering
+  \includegraphics[width=0.65\textwidth]{pics/baza.png}
+  \caption{Baza danych w aplikacji.}
+  \label{fig:baza}
+\end{schemat}
+
+ % ==== TODO ======
+\subsection{Aplikacja www}
+Aplikacja bazuje na widokach (logika aplikacji) oraz szablonach (uzupełnianych przez aplikację).  
+
+ % ==== TODO ======
+\subsection{Wizualizacja tras}
+
+System wizualizacji bazuje na komunikacji na GoogleMaps. Dane z bazy dotyczące trasy i położenia cystern są konwertowane i wyświetlane za pomocą apletu. 
+
+\subsection{Interfejs użytkownika}
+Po uruchomieniu aplikacji na serwerze, należy wpisać odpowiedni adres w przeglądarkę. Powinna pojawić się strona główna (rys.\ref{fig:index}).
+
+\begin{wykres}[htbp]
+  \centering
+  \begin{tabular}{c}
+    \includegraphics[width=0.99\textwidth]{pics/after_login.png} \\
+    \raisebox{1.5ex}{a) Widok strony głównej użytkownika niezalogowanego.} \\
+    \\
+    \includegraphics[width=0.99\textwidth]{pics/index.png} \\
+  \raisebox{1.5ex}{b)  Widok strony głównej po autoryzacji.}\\ 
+\end{tabular}
+  \caption{Strona główna.}
+  \label{fig:index}
+\end{wykres}
+
+Nie będąc zalogowanym, można przejść do zakładek: składnie zamówień, przegląd zamówień, przegląd cystern oraz do panelu logowania (rys.\ref{fig:index}a). 
+
+W przypadku zalogowanych użytkowników możliwe jest również przejście do panelu zarządzania i przegląd tras cystern oraz wylogowanie (rys.~\ref{fig:index}b).
+
+\subsubsection{Logowanie}
+Aby zabezpieczyć system przed niepowołanym dostępem, konieczne jest posiadanie uprawnień przy dokonywaniu modyfikacji systemu, w tym też uruchamianie algorytmu optymalizującego. W przypadku przejścia na taką stronę (np. poprzez wpisanie adresu) bez uwierzytelnienia, pojawi się okno logowania (rys.~\ref{fig:login}). 
+
+\begin{wykres}[htbp]
+  \centering
+  \includegraphics[width=0.99\textwidth]{pics/login.png}
+  \caption{Widok logowania.}
+  \label{fig:login}
+\end{wykres}
+
+
+\subsubsection{Przeglądanie zgłoszeń}
+W zakładce \emph{Przeglądanie zgłoszeń}, można zobaczyć listę zamówień (rys.~\ref{fig:order}a). Po kliknięciu w id zamówienia (data złożenia zamówienia), przechodzi się w szczegóły zamówienia, gdzie wyświetlane są: gdzie ma być dostarczone zamówienie, data, ilość i typ paliwa oraz cysterny obsługujące zlecenie (rys.~\ref{fig:order}b). Po kliknięciu w nazwę cysterny można przejść do szczegółów cysterny.
+\begin{wykres}[htbp]
+  \centering
+  \begin{tabular}{c}
+    \includegraphics[width=0.99\textwidth]{pics/order_list.png} \\
+    \raisebox{1.5ex}{a) Przeglądanie zamówień.} \\
+    \\
+    \includegraphics[width=0.99\textwidth]{pics/order_detail.png} \\
+  \raisebox{1.5ex}{b) Szczegóły zamówienia.}\\ 
+\end{tabular}
+  \caption{Przeglądanie zgłoszeń.}
+  \label{fig:order}
+\end{wykres}
+
+\subsubsection{Przeglądanie cystern}
+W zakładce \emph{Przeglądania cystern}, pokazane są wszyskie cysterny, wraz z informacją czy realizuje ona zamówienie, pojemność całkowita i pojemność załadunku (rys.~\ref{fig:cistern}a). Po kliknięciu w nazwę cysterny, wyświetlane są szczegóły dotyczące cysterny: przegląd wszytkich kontenerów na paliwo wraz z zamówieniami jakie są im przydzielone, pojemność kontenera oraz typ przewożonego paliwa. Pokazana jest też trasa cysterny oraz podgląd cysterny (rys.~\ref{fig:cistern}b).
+
+\begin{wykres}[htbp]
+  \centering
+  \begin{tabular}{cc}
+    \includegraphics[width=0.99\textwidth]{pics/cistern_list.png} \\
+    \raisebox{1.5ex}{a) Przeglądanie floty.} \\
+    \\
+    \includegraphics[width=0.99\textwidth]{pics/cistern_detail.png} \\
+  \raisebox{1.5ex}{b) Szczegóły cysterny.}\\ 
+\end{tabular}
+  \caption{Przeglądanie cystern.}
+  \label{fig:cistern}
+\end{wykres}
+
+\subsubsection{Dodawnie zgłoszeń}
+W celu dodania zgłoszenia, należy przejść w zakładkę \emph{Złóż zamówienie}. Pojawia się formularz zgłoszeniowy, w którym należy wybrać miejsce docelowe, typ paliwa i ilość (rys.~\ref{fig:order_form}). Po pomyślnym przyjęciu zgłoszenia pojawia się komunikat i użytkownik przekierowywany jest na stronę główną.
+
+\begin{wykres}[htbp]
+  \centering
+  \includegraphics[width=0.99\textwidth]{pics/order_form.png}
+  \caption{Formularz zamówienia.}
+  \label{fig:order_form}
+\end{wykres}
+
+\subsubsection{Przeliczanie tras}
+W przypadku, gdy użytkownik jest zalogowany, ma możlwość również ręcznego przeliczania trasy. Należy przejść w zakładkę \emph{Zarządzanie} i potwierdzić przeliczenie trasy (rys.~\ref{fig:manage}). Po przeliczeniu tras cystern, użytkownik zostanie przekierowany na stronę główną.
+\begin{wykres}[htbp]
+  \centering
+  \includegraphics[width=0.99\textwidth]{pics/manage.png}
+  \caption{Ręczne uruchomienie przeliczania tras.}
+  \label{fig:manage}
+\end{wykres}
+
+\subsubsection{Podgląd ścieżek}
+Zalogowany użytkownik ma możliwość również wglądu w obliczone trasy. W tym celu należy przejść w zakładkę \emph{Podgląd śćieżek}. Wyświetlą się szczegóły zaplanowanych tras (rys.~\ref{fig:path}).
+\begin{wykres}[htbp]
+  \centering
+  \includegraphics[width=0.99\textwidth]{pics/path.png}
+  \caption{Podgląd tras cystern.}
+  \label{fig:path}
+\end{wykres}
+
+\subsubsection{Panel administracyjny}
+Aby mieć możliwość wglądu oraz modyfikacji zawartości bazy danych, należy przejść do \emph{Panelu administracyjnego}. Po wpisaniu w adres przeglądarki adresu oraz zalogowaniu się (rys.~\ref{fig:admin}a), można zobaczyć listę modeli bazy (rys.~\ref{fig:admin}b). Po wybraniu modelu, widoczna jest lista obiektów (rys.~\ref{fig:admin}c), jest możliwość dodania, modyfikacji lub usunięcia obiektu (rys.~\ref{fig:admin}d).
+
+\begin{wykres}[htbp]
+  \centering
+  \begin{tabular}{cc}
+    \includegraphics[width=0.5\textwidth]{pics/admin_login.png} &
+    \includegraphics[width=0.5\textwidth]{pics/admin_all.png} \\
+    \raisebox{1.5ex}{a) Okno logowania administratora.} &
+  \raisebox{1.5ex}{b) Lista modeli w bazie danych.}\\ 
+  \\
+\end{tabular}
+  \begin{tabular}{c}
+    \includegraphics[width=0.99\textwidth]{pics/admin_list.png} \\
+  \raisebox{1.5ex}{c) Przykładowa lista obiektów (cysterny).} \\ 
+  \\
+    \includegraphics[width=0.99\textwidth]{pics/admin_detail.png} \\
+  \raisebox{1.5ex}{d) Szczegółowy widok obiektu (cysterna).}\\ 
+\end{tabular}
+  \caption{Panel administracyjny.}
+  \label{fig:admin}
+\end{wykres}
+
+ % ==== TODO ======
+\section{Uwagi i wnioski}
 
 
 
@@ -56,6 +276,6 @@ TODO trzeba zapytać o schemat dokumentacji
 
 % =============================================
  \begin{thebibliography}{12}
-   \bibitem{mgr} TODO Czyjaś praca magisterska \emph{Ktoś} Kiedyś
+   \bibitem{mgr} M. Bartecki \emph{System zarządzania dystrybucją paliw.} 
  \end{thebibliography}
 \end{document}

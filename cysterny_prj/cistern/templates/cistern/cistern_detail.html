@@ -30,7 +30,7 @@
         <tr>
             <th class="col-lg-1">Typ paliwa</th>
             <th class="col-lg-1">Ładowność</th>
-            <th class="col-lg-1">Czy załadowany</th>
+            <th class="col-lg-1">Załadowany</th>
             <th class="col-lg-1">Zamówienie</th>
         </tr>
         </thead>
@@ -39,8 +39,21 @@
       <tr>
           <td>{{ fc.type }}</td>
           <td>{{ fc.max_capacity }}</td>
-          <td>{{ fc.is_loaded }}</td>
-          <td> {{ fc.order }}</td>
+          <td> {% if fc.is_loaded %}
+
+<span class="label label-info">tak</span>
+
+
+              {% else %}
+              <span class="label label-default">nie</span>
+
+              {% endif %}
+          </td>
+          <td> {% if fc.order %}
+              <a href="{% url 'order_detail' fc.order.id %}"> {{ fc.order.data|date:"d.m.Y," }} {{ fc.order.data|time:"H:i" }} </a>
+            <!--{{ fc.order.data|date:"d.m.Y, " }} {{ fc.order.data|time:"H:i" }} </td>-->
+              {% endif %}
+          <!--<td> {{ fc.order. }}</td>-->
           </tr>
         {% endfor %}
            </tbody>

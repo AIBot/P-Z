@@ -43,7 +43,16 @@
              <td>{{ order.to_city.name }}</td>
              <td>{{ order.fuel_type }}</td>
              <td>{{ order.order_capacity}} </td>
-             <td>{{ order.status}}</td>
+             <td>
+                {% if order.status.status == 0 %}
+              <span class="label label-default">przyjęty do realizacji</span>
+              {% elif  order.status.status == 1 %}
+              <span class="label label-info">w realizacji</span>
+                 {% elif  order.status.status == 2 %}
+                 <span class="label label-success">zrealizowany</span>
+              {% endif %}
+
+             </td>
          </tr>
     {% endfor %}
         </tbody>

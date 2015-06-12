@@ -43,9 +43,9 @@
 
           <td>{{ cistern.capacity }}  / {{ cistern.max_capacity }}</td>
           <td> {% if cistern.status == 0 %}
-              gotowy
+              <span class="label label-success">gotowy</span>
               {% else %}
-              w trasie
+              <span class="label label-info">w trasie</span>
               {% endif %}
           </td>
           <td>{{ cistern.last_location }}</td>
