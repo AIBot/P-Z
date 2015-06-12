@@ -80,16 +80,19 @@ a {
 
 }
 #login {
+    position: absolute;
 	margin-top: 10px;
-	margin-left: 10%;
-	margin-right: 40%;
+	margin-left: 0px;
+	margin-right: 0px%;
 }
+
 #inside {
 	margin-top: 40px;
 	margin-left: 10%;
 	margin-right: 10%;
     width: 80%
 }
+
 
 #right_logo {
     float: right;

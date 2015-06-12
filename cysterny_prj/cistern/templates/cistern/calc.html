@@ -15,16 +15,32 @@
         {% endfor %}
     </ul>
     {% endif %}
+    <div id="inside">
+        <p> Możliwość zarządzania systemem: przeliczenie tras, usunięcie zamówień oraz tras cystern.
+        Stąd jest też możliwość przejścia do zarządzania bazą danych.</p>
+    </div>
     <!--Some messages-->
 <div id="inside">
-    <p>
-    Czy przeliczyć trasy cystern?
-    <div class="container">
-    {% load crispy_forms_tags %}
-    {% crispy form %}
+
+    <p></p>
+    <table>
+        <tr>
+           <td> <a class="btn btn-primary" style="width: 305px" href="{% url 'calc' %}">Przelicz trasy</a></td>
+        </tr>
+        <tr>
+            <td>   <a class="btn btn-default" style="width: 150px" href="{% url 'path_del' %}">Usuń ścieżki</a>
+       <a class="btn btn-default" style="width: 150px"  href="{% url 'order_del' %}">Usuń zamówienia</a> </td>
+
+        </tr>
+        <tr>
+            <td> <a class="btn btn-success" style="width: 305px" href="{% url 'admin:index' %}">Baza danych</a></td>
+
+        </tr>
+    </table>
+
+
+
 </div>
     </div>
-    </p>
-</div>
 
     {% endblock %}

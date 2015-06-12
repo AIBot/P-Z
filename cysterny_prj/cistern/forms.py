@@ -52,8 +52,8 @@ class CalcForm(forms.Form):
         self.helper.form_method = 'post'
         self.helper.form_action = '.'
         self.helper.layout = Layout(
-            Submit("submit", "Przelicz",  css_class='btn btn-primary'),
-            HTML("""<a class="btn btn-default" href="{% url 'index' %}">Anuluj</a> <br>"""),
+            Submit("submit", "Tak",  css_class='btn btn-primary'),
+            HTML("""<a class="btn btn-default" href="{% url 'index' %}">Nie</a> <br>"""),
 
         )
 
@@ -64,8 +64,8 @@ class LoginForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):
         super(LoginForm, self).__init__(*args, **kwargs)
         self.helper.form_class = 'form-horizontal'
-        self.helper.label_class = 'col-lg-2'
-        self.helper.field_class = 'col-lg-6'
+        self.helper.label_class = 'col-md-2'
+        self.helper.field_class = 'col-md-4'
         self.helper.layout = Layout(
             Field('username', placeholder="Username"),
             Field('password', placeholder="Password"),

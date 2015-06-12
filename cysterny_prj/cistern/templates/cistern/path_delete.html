@@ -1,14 +1,9 @@
 {% extends "cistern/base.html"%}
-{% block title %} - Złoż zamówienie{% endblock %}
+{% block title %} - Zarządzanie {% endblock %}
 {% block content %}
 
-<div id="OrderForm">
-<h1>Złóż zamówienie</h1>
-<div id="Index_txt">
-<p>
-    Zamówienie zrealizujemy najszybciej jak to możliwe.
-</p>
-
+<div id="Calc">
+<h1>Potwierdź</h1>
 
     <!--Some messages-->
     {% if messages %}
@@ -21,12 +16,15 @@
     </ul>
     {% endif %}
     <!--Some messages-->
-<div id="login">
-<div class="container">
+<div id="inside">
+    <p>
+    {{ msg_conf }}
+    <div class="container">
     {% load crispy_forms_tags %}
     {% crispy form %}
 </div>
     </div>
- </div>
-     </div>
+    </p>
+</div>
+
     {% endblock %}

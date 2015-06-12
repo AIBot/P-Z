@@ -17,7 +17,9 @@ from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
 from django.http import HttpResponseForbidden, HttpResponseRedirect
+from django import template
 
+register = template.Library()
 
 class LoginRequiredMixin(object):
     u"""Ensures that user must be authenticated in order to access view."""
@@ -156,14 +158,60 @@ class PathListView(PermissionRequiredMixin, TemplateView):
         context['path_list'] = Path.objects.all()
         return context
 
-class CalcView(PermissionRequiredMixin, FormView):
+class CisternCleanUpView(PermissionRequiredMixin, FormView):
+    template_name = "cistern/path_delete.html"
+    form_class = CalcForm
+    success_url = reverse_lazy('index')
+
+    def get_context_data(self, **kwargs):
+        context = super(CisternCleanUpView, self).get_context_data(**kwargs)
+        context['msg_conf'] = "Czy usunąć zamówienia?"
+        return context
+
+    def clear_cistern(self): # cisterns orders
+        cisterns = Cistern.objects.all()
+        for cist in cisterns:
+            cist.status = 0 # ready
+            cist.save()
+        stat = get_object_or_404( OrderStatus, status=1)
+        Order.objects.filter(status=stat).delete()
+
+    def form_valid(self, form):
+        self.clear_cistern()
+        messages.success(self.request, 'Usunięto zamówienia.')
+        return super(CisternCleanUpView, self).form_valid(form)
+
+class DeletePathView(PermissionRequiredMixin, FormView):
+    template_name = "cistern/path_delete.html"
+    form_class = CalcForm
+    success_url = reverse_lazy('index')
+
+    # @register.inclusion_tag(template_name, takes_context=True)
+    def clear_paths(self):
+        Path.objects.all().delete()
+
+    def get_context_data(self, **kwargs):
+        context = super(DeletePathView, self).get_context_data(**kwargs)
+        context['msg_conf'] = "Czy usunąć ścieżki?"
+        return context
+
+    def form_valid(self, form):
+        self.clear_paths()
+        messages.success(self.request, 'Usunięto ścieżki.')
+        return super(DeletePathView, self).form_valid(form)
+
+class ManageView(PermissionRequiredMixin, TemplateView):
     template_name = "cistern/calc.html"
+
+
+class CalcView(PermissionRequiredMixin, FormView):
+    template_name = "cistern/path_delete.html"
     form_class = CalcForm
     success_url = reverse_lazy('index')
 
     def get_context_data(self, **kwargs):
         context = super(CalcView, self).get_context_data(**kwargs)
-
+        context['msg_conf'] = "Czy przeliczyć trasy?"
         return context
 
     def add_results_to_db(self, results):
@@ -177,7 +225,7 @@ class CalcView(PermissionRequiredMixin, FormView):
             cistern = Cistern.objects.filter(id=results[i][1] )
             cistern.update(status=1)
             cistern = get_object_or_404(Cistern, id=results[i][1])
-            j = 0
+            j = -1
             for fuel in cistern.fuelcontainer_set.all():  # dodac paliwa w cysternie
                 j = j+1
                 if j == results[i][2]:  # paliwa id do zmiany
