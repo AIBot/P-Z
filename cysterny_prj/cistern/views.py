@@ -150,7 +150,7 @@ class CreateOrderView(CreateView):
         return super(CreateOrderView, self).form_valid(form)
 
 
-class PathListView(PermissionRequiredMixin, TemplateView):
+class PathListView(TemplateView):
     template_name="cistern/path_list.html"
 
     def get_context_data(self, **kwargs):

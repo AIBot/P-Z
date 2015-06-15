@@ -66,7 +66,7 @@ Polityka realizacji zamówień działa w systemie sesyjnym. To znaczy, że zamó
 
   \subsection{Strategia wypełniania komór cystern paliwem.}
 
-	Podczas napełniania komór cystern brane są pod uwagę następujące czynniki. W przypadku, gdy ilość zamówionego paliwa jest większa od pojemności rozpatrywanej komory, wówczas komora ta zostanie napełniona, a pozostała część zamówionego paliwa przekazana zostanie do kolejnej komory. Jeśli podczas wyboru komory dla danej ilości paliwa pojemność tej komory jest większa niż ilość paliwa, wówczas poszukiwany jest zbiornik mniejszy, o pojemności jak najbardziej zblizonej do rozmiaru rozpatrywanego zamówienia. Pozwala to uniknąć wypełniania dużych komór małymi ilościami paliwa, co ma wpływ na koszty transportu, a także jego bezpieczeństwo. 
+	Podczas napełniania komór cystern brane są pod uwagę różne czynniki. W przypadku, gdy ilość zamówionego paliwa jest większa od pojemności rozpatrywanej komory, wówczas komora ta zostanie napełniona, a pozostała część zamówionego paliwa przekazana zostanie do kolejnej komory. Jeśli podczas wyboru komory dla danej ilości paliwa pojemność tej komory jest większa niż ilość paliwa, wówczas poszukiwany jest zbiornik mniejszy, o pojemności jak najbardziej zblizonej do rozmiaru rozpatrywanego zamówienia. Pozwala to uniknąć wypełniania dużych komór małymi ilościami paliwa, co ma wpływ na koszty transportu, a także jego bezpieczeństwo. 
 
   \subsection{Ograniczenie związane z maksymalnycm czasem pracy kierowcy}
 	Odległości między punktami rozlewu paliwa określone są czasem potrzebnym do przebycia drogi między nimi. Podczas realizacji poprzednio opisanych zadań przeprowadzana jest estymacja czasu potrzebnego do zrealizowania zadania. Realizowane jest to w następujący sposób. Podczas wyboru cysterny do zrealizowania zadania wyliczany jest pozostały czas możliwej pracy kierowcy owego pojazdu na podstawie z góry ustalonego maksymalnego czasu dziennej pracy oraz przybliżonego czasu wykonania zadań już do cysterny przydzielonych. W przypadku wyznaczenia sumarycznego czasu pracy przekraczającego maksymalny, cysterna nie jest brana pod uwagę do tego zamówienia.
@@ -234,7 +234,10 @@ Aplikacja bazuje na widokach (logika aplikacji) oraz szablonach (uzupełnianych 
  % ==== TODO ======
 \subsection{Wizualizacja tras}
 
-System wizualizacji bazuje na komunikacji na GoogleMaps. Dane z bazy dotyczące trasy i położenia cystern są konwertowane i wyświetlane za pomocą apletu. 
+  Do wizualizacji trasy wykorzystana została funkcjonalność dostarczana przez Google Maps. 
+%System wizualizacji bazuje na komunikacji na Google Maps. Dane z bazy dotyczące trasy i położenia cystern są konwertowane i wyświetlane za pomocą apletu. 
+
+  Na podstawie wpisów z bazy danych, w szablonie strony generowany jest JavaScript umożliwiający wizualizację tras przejazdu cystern.
 
 \subsection{Interfejs użytkownika}
 Po uruchomieniu aplikacji na serwerze, należy wpisać odpowiedni adres w przeglądarkę. Powinna pojawić się strona główna (rys.\ref{fig:index}).

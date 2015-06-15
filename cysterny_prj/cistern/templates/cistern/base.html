@@ -33,8 +33,8 @@
             <li><a href="{% url 'cistern' %}">Podgląd floty</a></li>
                <li><a href="{% url 'create_order' %}">Złoż zamówienie</a></li>
              <li><a href="{% url 'order_list' %}">Przegląd zamówień</a></li>
-               {% if user.is_authenticated %}
                <li><a href="{% url 'path_list' %}">Przegląd ścieżek</a></li>
+               {% if user.is_authenticated %}
 
                <li><a href="{% url 'manage' %}">Zarządzanie</a></li>
                {% endif %}

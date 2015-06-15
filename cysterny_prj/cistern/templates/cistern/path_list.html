@@ -1,10 +1,10 @@
 {% extends "cistern/base.html"%}
 {% block title %} - Przegląd zamówień {% endblock %}
 {% block content %}
+<script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript"></script>
 
 <div id="Path">
 <h1>Przegląd ścieżek</h1>
-<div id="inside">
     <p>
     Tu można zobaczyć trasy cystern.
 </p>
@@ -21,7 +21,6 @@
     {% endif %}
 
         <!--Some messages-->
-<div id="Path_detail">
 
 
     {% if path_list %}
@@ -32,19 +31,80 @@
             <th class="col-lg-3">Skąd</th>
             <th class="col-lg-1"></th>
              <th class="col-lg-3">Dokąd</th>
+            <th class="col-lg-4">Mapa</th>
+
+
         </tr>
         </thead>
         <tbody>
 
         {% for path in path_list %}
         {% for cc in path.n_city.all %}
-
          <tr>
              <td><a href="{% url 'cistern_detail' path.cistern.id %}"> {{ path.cistern}} </a></td>
              <td> {{ cc.from_city }} </td>
              <td>
   <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>  </td>
              <td> {{ cc.to_city }}</td>
+             <td>
+             		<div id="map{{ cc.id }}" style="width: 700px; height: 500px; border: 1px solid black; background: gray;">
+		<!-- tu będzie mapa -->
+		</div>
+   				 <!--<body onload="mapa{{ cc.id }}Start()">-->
+
+					<script type="text/javascript">
+
+			var dymek{{ cc.id }} = new google.maps.InfoWindow();
+			// niezbędne elementy do wyznaczenia trasy:
+
+			var trasa{{ cc.id }}  		 = new google.maps.DirectionsService();
+			var trasa_render{{ cc.id }} = new google.maps.DirectionsRenderer();
+			var e=document.getElementById("map{{cc.id }}");
+				//e.id="newid"+(++counter);
+				var mapa{{ cc.id }};
+				mapa{{ cc.id }}Start();
+
+			function mapa{{ cc.id }}Start()
+			{
+
+				var wspolrzedne = new google.maps.LatLng(51.1171653,17.0244796);
+				var opcjeMapy{{ cc.id }} = {
+					zoom: 10,
+					center: wspolrzedne,
+					mapTypeId: google.maps.MapTypeId.ROADMAP
+				};
+				mapa{{ cc.id }} = new google.maps.Map(document.getElementById("map{{cc.id }}"), opcjeMapy{{ cc.id }});
+
+				// ustawienie docelowej mapy i kontenera na wskazówki
+				  curr_id = "{{ cc.id }}"
+
+				trasa_render{{ cc.id }}.setMap(mapa{{ cc.id }});
+				var dane_trasy{{ cc.id }} =
+				{
+					origin: "{{cc.from_city}}",
+					destination: "{{cc.to_city}}",
+					travelMode: google.maps.DirectionsTravelMode.DRIVING
+				};
+
+				trasa{{ cc.id }}.route(dane_trasy{{ cc.id }}, obsluga_trasy{{ cc.id }});
+
+			}
+			function obsluga_trasy{{ cc.id }}(wynik, status)
+			{
+				if(status != google.maps.DirectionsStatus.OK || !wynik.routes[0])
+				{
+					alert('Wystąpił błąd!');
+					return;
+				}
+
+				trasa_render{{ cc.id }}.setDirections(wynik);
+			}
+
+		-->
+		</script>
+
+              </td>
+
          </tr>
         {% endfor %}
 
@@ -56,5 +116,4 @@
     {% endif %}
 </div>
 
-</div>
     {% endblock %}
