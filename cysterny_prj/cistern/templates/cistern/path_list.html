@@ -27,11 +27,11 @@
         <table class="table">
         <thead>
         <tr>
-            <th class="col-lg-3">Cysterna</th>
-            <th class="col-lg-3">Skąd</th>
-            <th class="col-lg-1"></th>
-             <th class="col-lg-3">Dokąd</th>
-            <th class="col-lg-4">Mapa</th>
+            <th class="col-md-2">Cysterna</th>
+            <th class="col-md-2">Skąd</th>
+            <th class="col-md-1"></th>
+             <th class="col-md-2">Dokąd</th>
+            <th class="col-lg-8">Mapa</th>
 
 
         </tr>
@@ -47,7 +47,9 @@
   <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>  </td>
              <td> {{ cc.to_city }}</td>
              <td>
-             		<div id="map{{ cc.id }}" style="width: 700px; height: 500px; border: 1px solid black; background: gray;">
+             		<!--<div id="map{{ cc.id }}" style="width: 700px; height: 500px; border: 1px solid black; background: gray;">-->
+              <div id="map{{ cc.id }}" style="width: 100%; height: 200px; border: 1px solid black; background: gray;">
+
 		<!-- tu będzie mapa -->
 		</div>
    				 <!--<body onload="mapa{{ cc.id }}Start()">-->

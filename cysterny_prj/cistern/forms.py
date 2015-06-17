@@ -23,8 +23,8 @@ class OrderForm(forms.ModelForm):
 
 
         self.helper.form_class = 'form-horizontal'
-        self.helper.label_class = 'col-lg-3'
-        self.helper.field_class = 'col-lg-2'
+        self.helper.label_class = 'col-md-3'
+        self.helper.field_class = 'col-md-2'
 
         self.helper.form_id = 'id-OrderForm'
         self.helper.form_method = 'post'

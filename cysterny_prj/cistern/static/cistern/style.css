@@ -24,6 +24,7 @@ a {
   color: #2f849e;
 }
 
+
 #on_right {
 	float: right;
 	position: absolute;
@@ -80,13 +81,14 @@ a {
 
 }
 #login {
-    position: absolute;
+    position: relative;
 	margin-top: 10px;
-	margin-left: 0px;
-	margin-right: 0px%;
+	margin-left: 10px;
+	margin-right: 10px;
 }
 
 #inside {
+    position: relative;
 	margin-top: 40px;
 	margin-left: 10%;
 	margin-right: 10%;
